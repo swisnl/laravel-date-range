@@ -1,0 +1,67 @@
+{
+    "name": "swisnl/laravel-date-range",
+    "type": "library",
+    "description": "Laravel package to support date ranges on models.",
+    "homepage": "https://github.com/swisnl/laravel-date-range",
+    "support": {
+        "issues": "https://github.com/swisnl/laravel-date-range/issues",
+        "source": "https://github.com/swisnl/laravel-date-range"
+    },
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^12.6",
+        "nesbot/carbon": "^3.0",
+        "spatie/laravel-package-tools": "^1.15.0",
+        "swisnl/date-range": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0",
+        "laravel/pint": "^1.5",
+        "larastan/larastan": "^3.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Swis\\DateRange\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rolf van de Krol",
+            "email": "rvandekrol@swis.nl",
+            "role": "Developer"
+        }
+    ],
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/phpunit",
+        "format": "vendor/bin/pint"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    }
+}
