@@ -193,6 +193,20 @@ class HasDateRangeBothDefaultNameNullableTest extends TestCase
     }
 
     #[Test]
+    public function it_can_sort_on_date_range(): void
+    {
+        $d = BothDefaultNameNullable::factory()->create(['start_date' => now()->subDay(), 'end_date' => null]);
+        $c = BothDefaultNameNullable::factory()->create(['start_date' => now()->subDay(), 'end_date' => now()->addDay()]);
+        $b = BothDefaultNameNullable::factory()->create(['start_date' => now()->subDay(), 'end_date' => now()]);
+        $a = BothDefaultNameNullable::factory()->create(['start_date' => null, 'end_date' => now()]);
+
+        $models = BothDefaultNameNullable::orderByDateRange()->get();
+
+        $this->assertCount(4, $models);
+        $this->assertEquals($models->pluck('id')->toArray(), [$a->id, $b->id, $c->id, $d->id]);
+    }
+
+    #[Test]
     public function it_can_sort_on_active(): void
     {
         BothDefaultNameNullable::factory(3)->past()->create();

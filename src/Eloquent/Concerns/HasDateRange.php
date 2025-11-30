@@ -180,14 +180,28 @@ trait HasDateRange
     #[Scope]
     protected function orderByDateRange(Builder $query, string $direction = 'asc'): void
     {
+        if (! in_array($direction, ['asc', 'desc'], true)) {
+            throw new InvalidArgumentException('Order direction must be "asc" or "desc".');
+        }
+
         $startDateColumn = $this->getQualifiedStartDateColumn();
         if ($startDateColumn) {
-            $query->orderBy($startDateColumn, $direction);
+            $nullStartDateValue = CarbonImmutable::create(1);
+            if ($nullStartDateValue) {
+                $query->orderByRaw('COALESCE('.$startDateColumn.', ?) '.strtoupper($direction), [$nullStartDateValue->format($query->getGrammar()->getDateFormat())]);
+            } else {
+                $query->orderBy($startDateColumn, $direction);
+            }
         }
 
         $endDateColumn = $this->getQualifiedEndDateColumn();
         if ($endDateColumn) {
-            $query->orderBy($endDateColumn, $direction);
+            $nullEndDateValue = CarbonImmutable::create(9999, 12, 31, 23, 59, 59);
+            if ($nullEndDateValue) {
+                $query->orderByRaw('COALESCE('.$endDateColumn.', ?) '.strtoupper($direction), [$nullEndDateValue->format($query->getGrammar()->getDateFormat())]);
+            } else {
+                $query->orderBy($endDateColumn, $direction);
+            }
         }
     }
 
